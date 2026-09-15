@@ -98,7 +98,7 @@ The command that became the normal connection method was:
 
 After that first SSH authentication, the phone presented a **second login**. On this Cisco generation, the outer SSH login and the internal Linux shell login are separate stages.
 
-Using Cisco's internal `default` login finally landed on the real Linux shell of the phone.
+Using Cisco's internal `default` login and `cisco` password finally landed on the real Linux shell of the phone.
 
 And that was the moment the project changed completely:
 
