@@ -64,6 +64,12 @@ exit with red handset button
 
 No Cthulhu service, external HTTP/TFTP/FTP, SSH launch or Internet connection is needed for normal final operation.
 
+<p align="center">
+  <img src="assets/final/cisco_ohne_lan.webp" alt="Cisco CP-9951 DOOM v.666 during the offline cold-boot proof with Ethernet disconnected" width="900">
+</p>
+
+<p align="center"><em>Offline means offline: the final v.666 phone was cold-booted and tested with Ethernet disconnected.</em></p>
+
 ---
 
 ## This is not the original streamed version
@@ -279,6 +285,12 @@ The final design deliberately avoids bootloader modification, firmware replaceme
 > **The cat wallpaper stays.**
 
 That requirement was established before any of the useful engineering decisions and has therefore been preserved throughout the project.
+
+<p align="center">
+  <img src="assets/final/cisco_bigmac_background.webp" alt="BigMac cat wallpaper on the Cisco CP-9951 with the v.666 label" width="900">
+</p>
+
+<p align="center"><strong>The cat background was the first important engineering decision. It remains.</strong></p>
 
 <p align="center">
   <img alt="questionable engineering" src="https://img.shields.io/badge/questionable%20engineering%20decisions-physically%20verified-ff8c00?style=for-the-badge">
