@@ -54,21 +54,79 @@ DOOM on Cthulhu
 
 At this point the Cisco was both display and controller, but the game still executed elsewhere.
 
-## Stage 4 — first shell on the phone
+## Stage 4 — the turning point: getting a shell on the phone
 
-Direct shell access changed the project completely.
+Until this point the CP-9951 was still, for practical purposes, a very unusual SIP/H.264 client.
 
-The CP-9951 exposed an embedded Linux environment:
+Then we found that Cisco had provided an official SSH diagnostic-access path for this generation of 89xx/99xx phones.
+
+This was **not an exploit**, not a bootloader modification and not a modified firmware image.
+
+Cthulhu was already supplying the phone's provisioning through DHCP/TFTP, so the existing provisioning path could be used:
 
 ```text
-MontaVista Linux Professional Edition Blackfoot
-Linux 2.6.18_pro500
-ARMv6 / ARMv6l
-Hardware: raven
-BusyBox
+Cthulhu
+  ↓
+dnsmasq / TFTP
+  ↓
+SEPC40ACB4D05D0.cnf.xml
+  ↓
+Cisco CP-9951
 ```
 
-Local hardware interfaces included multiple framebuffers and Linux-style input devices such as:
+Before changing anything, the working provisioning file was backed up as:
+
+```text
+SEPC40ACB4D05D0.cnf.xml.pre-ssh
+```
+
+SSH credentials for the first authentication stage were then added through the SEP provisioning file. After the phone reloaded the configuration, TCP port 22 was actually reachable.
+
+There was one more time-travel problem: the phone's SSH server is old enough that a current OpenSSH client on Cthulhu would not negotiate with it cleanly.
+
+The practical solution was an appropriately old client:
+
+```text
+PuTTY 0.60 / plink
+```
+
+The command that became the normal connection method was:
+
+```text
+/tmp/putty-0.60/unix/plink -ssh nebu@10.1.1.2
+```
+
+After that first SSH authentication, the phone presented a **second login**. On this Cisco generation, the outer SSH login and the internal Linux shell login are separate stages.
+
+Using Cisco's internal `default` login finally landed on the real Linux shell of the phone.
+
+And that was the moment the project changed completely:
+
+```text
+Welcome to MontaVista Linux Professional Edition Blackfoot
+```
+
+The shell user was not root:
+
+```text
+uid=65533(default)
+gid=100(users)
+```
+
+But it was more than sufficient to inspect the running system directly.
+
+`uname`, `/proc`, `/dev` and the available BusyBox tools revealed:
+
+- Linux `2.6.18_pro500`
+- ARMv6 / ARMv6TEJ
+- platform `raven`
+- roughly 244 MB RAM
+- Cisco Enhanced BusyBox 1.9.1
+- multiple framebuffer devices
+- local input devices
+- writable or otherwise useful runtime storage areas
+
+Important local interfaces included:
 
 ```text
 /dev/fb0
@@ -82,6 +140,16 @@ Local hardware interfaces included multiple framebuffers and Linux-style input d
 ```
 
 The phone was no longer merely a proprietary SIP appliance. It was an embedded ARM Linux computer that could be investigated directly.
+
+The question changed from:
+
+> **How far can we abuse this Cisco phone as a display and controller?**
+
+into:
+
+> **Wait. If this thing runs Linux on ARM... can we just run DOOM on the phone itself?**
+
+A few days later, the answer was yes. :D
 
 ## Stage 5 — Raven keypad reverse engineering
 
