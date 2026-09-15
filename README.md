@@ -86,14 +86,24 @@ The longer workshop story, photos and video belong to:
 
 ## Under the hood
 
-The first direct shell login exposed:
+### First shell access
+
+The first direct shell login was the point where the project stopped being only a strange Cisco-phone experiment and became an embedded Linux reverse-engineering job.
 
 ```text
 MontaVista(R) Linux(R) Professional Edition Blackfoot
 Cisco IP Phone 9951 9-2-1
 ```
 
-and later inspection showed the local hardware interfaces needed for a real native game port:
+<p align="center">
+  <img src="assets/reverse-engineering/01-first-shell.webp" alt="First SSH login on the Cisco CP-9951 showing MontaVista Linux and Cisco IP Phone 9951 9-2-1" width="900">
+</p>
+
+<p align="center"><em>First direct shell access to the CP-9951.</em></p>
+
+### Local framebuffer and input devices
+
+Later inspection showed the local hardware interfaces needed for a real native game port:
 
 ```text
 /dev/fb0
@@ -106,6 +116,14 @@ and later inspection showed the local hardware interfaces needed for a real nati
 /dev/input/hookswitch0
 ```
 
+<p align="center">
+  <img src="assets/reverse-engineering/02-framebuffer-input-devices.webp" alt="Framebuffer and local input devices on the Cisco CP-9951 including /dev/fb1 and /dev/input/keypad0" width="900">
+</p>
+
+<p align="center"><em>The phone exposes both native framebuffer output and local physical input devices.</em></p>
+
+### Raven input stack
+
 `/proc/bus/input/devices` identifies the important local interfaces as:
 
 ```text
@@ -113,6 +131,12 @@ Raven Keypad
 Raven Touchscreen
 Raven Hookswitch
 ```
+
+<p align="center">
+  <img src="assets/reverse-engineering/03-raven-input-devices.webp" alt="Raven Keypad, Raven Touchscreen and Raven Hookswitch listed in /proc/bus/input/devices" width="900">
+</p>
+
+<p align="center"><em>The CP-9951 exposes its physical controls through Cisco's Raven input stack.</em></p>
 
 ### Local keypad path
 
