@@ -88,12 +88,28 @@ The longer workshop story, photos and video belong to:
 
 ### First shell access
 
-The first direct shell login was the point where the project stopped being only a strange Cisco-phone experiment and became an embedded Linux reverse-engineering job.
+How we got there matters: the CP-9951's generation includes an **official Cisco SSH diagnostic-access path**. This was not an exploit, a bootloader hack or a modified firmware image.
+
+Cthulhu was already provisioning the phone through DHCP/TFTP, so the existing SEP configuration path could be used. The working configuration was backed up first as `SEPC40ACB4D05D0.cnf.xml.pre-ssh`, then SSH credentials for the outer authentication stage were added to the provisioning file.
+
+The phone's SSH implementation is old enough that modern OpenSSH was not a practical match. An old **PuTTY 0.60 / `plink`** client provided the compatible connection:
+
+```text
+/tmp/putty-0.60/unix/plink -ssh nebu@10.1.1.2
+```
+
+After the outer SSH authentication, the phone presented a second Cisco-internal login. Using the internal `default` login finally reached the real Linux shell. It was not root (`uid=65533(default)`, `gid=100(users)`), but it was more than enough to inspect the running system.
+
+Then this appeared:
 
 ```text
 MontaVista(R) Linux(R) Professional Edition Blackfoot
 Cisco IP Phone 9951 9-2-1
 ```
+
+That was the point where the project stopped being only a strange Cisco-phone experiment and became an embedded Linux reverse-engineering job.
+
+The full SSH/provisioning transition is documented in [`docs/project-history.md`](docs/project-history.md#stage-4--the-turning-point-getting-a-shell-on-the-phone).
 
 <p align="center">
   <img src="assets/reverse-engineering/01-first-shell.webp" alt="First SSH login on the Cisco CP-9951 showing MontaVista Linux and Cisco IP Phone 9951 9-2-1" width="900">
