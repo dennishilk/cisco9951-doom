@@ -1,0 +1,1 @@
+Root README is generated from the physically verified v.666 state and will receive final hero media after the photo/video session.
