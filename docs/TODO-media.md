@@ -1,2 +1,0 @@
-- add final v.666 hero photo
-- add proof video showing Ethernet disconnected, cold boot, Applications → Doom, gameplay + sound, red-handset exit
